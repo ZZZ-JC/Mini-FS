@@ -133,7 +133,7 @@ int releaseFile(int inodeNum) {
 	}
 	int i = 0;
 	while (fileBlock[i] != 0) {
-		fileBlock[i] = 0;
+		disk->FAT[fileBlock[i]] = 0;
 		i++;
 	}
 	Myinode->fileSize = 0;
