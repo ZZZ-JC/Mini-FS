@@ -1,5 +1,32 @@
-#include"create.h"
-void create()
+//
+//  creat.cpp
+//  Test1
+//
+//  Created by 王岩 on 2018/9/9.
+//  Copyright © 2018 王岩. All rights reserved.
+//
+
+#include <stdio.h>
+
+#include "OS.h"
+
+//全局变量
+extern FILE *p; //外存起始位置
+extern std::string cmd;
+DISK *disk = new DISK;
+extern char command[50]; //文件名标识符
+extern char SName[59];
+int makeNewFile(const char* filename, int size);
+long filesize(FILE *fp);
+int newfileout(char name[]);
+int addr_superblock_start = 0;
+int addr_fat_start = 0;
+int addr_inodemap_start = 0;
+int addr_inodearray_start = 0;
+int addr_dirUnits_start = 0;
+int addr;
+
+void creat()
 {
 
 	//char absoluteAddr[100] = "/Users/Jetpack/Desktop/GOod GOOd sTudy./Mini_FS/";
@@ -8,7 +35,7 @@ void create()
 	//FILE* fp = fopen("E:/mini-FS/mini.fs", "rb");
 	//if (fp == NULL)
 	{
-		p = fopen("E:/mini-FS/mini.fs", "wb");
+		p = fopen("D:/mini-FS/mini.fs", "wb");
 		for (int i = 0; i < inode_count; i++)
 		{
 			disk->dirUnits[i].inodeNumber = -1;
@@ -58,8 +85,6 @@ void create()
 		fseek(p, addr_dirUnits_start, SEEK_SET);
 		fwrite(disk->dirUnits, sizeof(disk->dirUnits), 1, p);
 		addr = reserved_block_mount * 4096;
-		printf("%d", reserved_block_mount);
-		printf("%d", addr);
 
 		//jiewei
 
@@ -72,7 +97,7 @@ void create()
 
 void mount()
 {
-	p = fopen("E:/mini-FS/mini.fs", "rb+");
+	p = fopen("D:/mini-FS/mini.fs", "rb+");
 	fclose(p);
 }
 
@@ -88,13 +113,12 @@ void copyin(const char*filename)//复制文件
 	char *buffer = (char*)malloc(size);
 	fread(buffer, 1, size, fp);
 	fclose(fp);
-
 	int count = (size + block_size - 1) / block_size;//块数
 	int filenumber = makeNewFile(filename, count);
 	disk->inode_array[filenumber].fileSize = size;
-	p = fopen("E:/mini-FS/mini.fs", "rb+");
+	p = fopen("D:/mini-FS/mini.fs", "rb+");
 	fseek(p, addr_inodearray_start, SEEK_SET);
-	fwrite(&size, 6000 * 4096, 1, p);
+	fwrite(&size, 6000*4096, 1, p);
 	nowaddr = addr + filenumber * block_size;
 	fseek(p, nowaddr, SEEK_SET);
 	filenumber = reserved_block_mount + filenumber;
@@ -110,7 +134,8 @@ void copyin(const char*filename)//复制文件
 
 void copyout(const char*filename, char SName[])
 {
-	p = fopen("E:/mini-FS/mini.fs", "rb");
+
+	p = fopen("D:/mini-FS/mini.fs", "rb");
 	long size;
 
 	int nowaddr;
@@ -122,19 +147,25 @@ void copyout(const char*filename, char SName[])
 	fseek(p, nowaddr, SEEK_SET);
 	char *buffer = (char*)malloc(size);
 	nowinode += reserved_block_mount;
-	int blockcount = (size + block_size - 1) / block_size;
-
-	for (int i = 0; i < blockcount; i++)
+	int blockcount = (size / block_size)+1;
+	char *ch = buffer;
+	for (int i = 0; i < size; i++)
 	{
-		fread(buffer + i * block_size, 1, block_size, p);
+		buffer[i] = 0;
+	}
+	for (int i = 0; i < blockcount-1; i++)
+	{
+		fread(ch, 1, block_size, p);
 		nowaddr = disk->FAT[nowinode] * block_size;
 		fseek(p, nowaddr, SEEK_SET);
 		nowinode = disk->FAT[nowinode];
+		ch = ch + block_size;
 	}
-
-
-	FILE *fp = fopen(filename, "wb");
-	fwrite(buffer, 1, size, fp);
-	fclose(fp);
 	fclose(p);
+
+	FILE *fpp = fopen(filename, "w");
+	fwrite(buffer, 1, size, fpp);
+	fclose(fpp);
+
 }
+
