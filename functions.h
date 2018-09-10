@@ -4,7 +4,7 @@
 #include<iostream>
 
 using namespace ::std;
-extern DISK disk;
+extern DISK* disk;
 extern FILE* fp;
 
 //文件重命名
