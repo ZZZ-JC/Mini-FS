@@ -3,7 +3,7 @@
 //  Test1
 //
 //  Created by 王岩 on 2018/9/9.
-//  Copyright  2018 王岩. All rights reserved.
+//  Copyright © 2018 王岩. All rights reserved.
 //
 
 #ifndef OS_h
@@ -17,12 +17,11 @@
 
 
 //常量定义
-#define system_size (1024*1024*1024) //系统大小,1G
-#define block_size (512*1024) //块大小,0.5M
+#define system_size (1<<30) //系统大小,1G
+#define block_size (1<<12) //块大小,4K
 #define block_mount (system_size/block_size) //块个数
-#define reserved_block_mount block_mount*(1/16) //保留块的数目，即disk结构体逻辑上应该占的块数
+#define reserved_block_mount (block_mount/16) //保留块的数目，即disk结构体逻辑上应该占的块数
 #define data_block_mount (block_mount - reserved_block_mount) //数据块数目
-
 
 
 //目录项
@@ -37,12 +36,10 @@ struct dirUnit {
 //inode
 struct iNode {
 	int startBlockNum; //文件数据起始块编号
-	int fileSize; //文件的
-	int dataSize;
-	int readPtr;
+	long fileSize; //文件的大小
 };
 
-const int inode_count =data_block_mount;
+const int inode_count = data_block_mount;
 
 //superblock
 struct superBlock
@@ -60,10 +57,9 @@ struct superBlock
 struct DISK {
 	superBlock superblock;
 	int FAT[block_mount];
-	int inodeMap[inode_count];
+	int inode_Map[inode_count];
 	iNode inode_array[inode_count];
-	dirUnit dirUnits[data_block_mount];
+	dirUnit dirUnits[inode_count];
 };
 
 #endif /* OS_h */
-
