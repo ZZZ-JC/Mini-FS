@@ -3,11 +3,11 @@
 //文件重命名
 int changeName(char oldName[], char newName[])
 {
-	for (int i = 0; i < disk.superblock.iNodeMount; i++)
+	for (int i = 0; i < disk->superblock.iNodeMount; i++)
 	{
-		if (strcmp(oldName, disk.dirUnits[i].fileName) == 0)
+		if (strcmp(oldName, disk->dirUnits[i].fileName) == 0)
 		{
-			strcpy(disk.dirUnits[i].fileName, newName);
+			strcpy(disk->dirUnits[i].fileName, newName);
 			return 0;
 		}
 	}
@@ -18,32 +18,34 @@ int changeName(char oldName[], char newName[])
 
 //显示帮助信息
 void help() {
-	printf("The following are some operations and the details:\n");
-	printf("creat\t Creat a new storage space.\t\n");
-	printf("cd\t Toggle directory.\t\n");
-	printf("add\t Add a local file to the Mini-FS space.\t\n");
-	printf("fmt\t Formatting the current Mini-FS space.\t\n");
-	printf("dr\t Display the file directory in the space.\t\n");
-	printf("cp\t Copy the file.\t\n");
-	printf("dl\t Delete the file in the space.\t\n");
-	printf("tp\t Display the text file in the space.\t\n");
-	printf("more\t Paging displays text files in space.\t\n");
-	printf("att\t Display spatial file properties.\t\n");
-	printf("help\t Display informationof help.\t\n");
-	printf("dlDir\t Delete folder.\t\n");
-	printf("pth\t Display the path for the current file.\t\n");
-	printf("newfldr\t Creat a new folder.\t\n");
-	printf("newfile\t Creat a new file.\t\n");
-	printf("rname\t Rename the file.\t\n");
-	printf("close\t Close the space and return to the operating system.\t\n");
+	printf("The following are some operations and details:\n");
+	printf("create\t Creat Mini-FS.\t\n");
+	//printf("cd\t Toggle directory.\t\n");
+	printf("mount\t Load Mini-FS.\t\n");
+	//printf("add\t Add a local file into Mini-FS.\t\n");
+	printf("fmt\t Format Mini-FS space.\t\n");
+	//printf("dr\t Display the file directory in the space.\t\n");
+	printf("copyin\t Copy a file from operating system into Mini-FS.\t\n");
+	printf("copyout\t Copy a file from Mini-FS into operating system.\t\n");
+	printf("deletefile\t Delete a file in Mini-FS.\t\n");
+	//printf("tp\t Display the text file in the space.\t\n");
+	//printf("more\t Paging displays text files in space.\t\n");
+	printf("att\t Display spatial file`s arrtibutes.\t\n");
+	printf("help\t Display help informationof.\t\n");
+	//printf("dlDir\t Delete folder.\t\n");
+	//printf("pth\t Display the path for the current file.\t\n");
+	//printf("newfldr\t Creat a new folder.\t\n");
+	printf("newfile\t Create a new file.\t\n");
+	printf("rename\t Rename a file.\t\n");
+	printf("close\t Close Mini-FS and return to the operating system.\t\n");
 }
 
 //显示空间文件属性
 int Att(char filename[]) {
-	for (int i = 0; i < disk.superblock.iNodeMount; i++) {
-		if (strcmp(disk.dirUnits[i].fileName, filename) == 0) {
+	for (int i = 0; i < disk->superblock.iNodeMount; i++) {
+		if (strcmp(disk->dirUnits[i].fileName, filename) == 0) {
 			printf("%s ", filename);
-			printf("%d\n", disk.inode_array[disk.dirUnits[i].inodeNumber].fileSize);
+			printf("%d\n", disk->inode_array[disk->dirUnits[i].inodeNumber].fileSize);
 			return 0;
 		}
 	}
@@ -54,18 +56,80 @@ int Att(char filename[]) {
 
 //格式化系统
 void fmt() {
-	memset(disk.FAT, 0, sizeof(disk.FAT));
-	memset(disk.inodeMap, 0, sizeof(disk.inodeMap));
-	disk.superblock.iNodeMount = 0;
+	//extern int addr_superblock_start ;
+	//extern int addr_fat_start = 0;
+	//extern int addr_inodemap_start = 0;
+	//extern int addr_inodearray_start = 0;
+	//extern int addr_dirUnits_start = 0;
+	//extern int addr;
+	//p = fopen("D:/mini-FS/mini.fs", "wb");
+	//for (int i = 0; i < inode_count; i++)
+	//{
+	//	disk->dirUnits[i].inodeNumber = -1;
+	//	disk->dirUnits[i].fileName[0] = 0;
+	//}
+	//for (int i = 0; i < reserved_block_mount; i++)
+	//	disk->FAT[i] = 1;
+	//for (int i = reserved_block_mount; i < block_mount; i++)
+	//	disk->FAT[i] = 0;
+	//for (int i = 0; i < inode_count; i++)
+	//	disk->inode_Map[i] = 0;
+	//for (int i = 0; i < inode_count; i++)
+	//{
+	//	disk->inode_array[i].fileSize = 0;
+	//	disk->inode_array[i].startBlockNum = 0;
+	//}
+	//disk->superblock.blockMount = block_mount;
+	//disk->superblock.fatBlockMount = sizeof(disk->FAT) / block_size;
+	//disk->superblock.iNodeBlockMount = sizeof(sizeof(disk->inode_array)) / block_size;
+	//disk->superblock.iNodeMount = data_block_mount;
+	//disk->superblock.num1stDataBlock = reserved_block_mount + 1;
+
+	////kaitou
+	////superblock
+	//addr_superblock_start = 0;
+	//fseek(p, addr_superblock_start, SEEK_SET);
+	//fwrite(&(disk->superblock), sizeof(disk->superblock), 1, p);
+
+
+	////FAT
+	//addr_fat_start = block_size * 10;
+	//fseek(p, addr_fat_start, SEEK_SET);
+	//fwrite((disk->FAT), sizeof((disk->FAT)), 1, p);
+
+	////inode_map
+	//addr_inodemap_start = block_size * 300;
+	//fseek(p, addr_inodemap_start, SEEK_SET);
+	//fwrite(disk->inode_Map, sizeof((disk->inode_Map)), 1, p);
+
+	////inode_array
+	//addr_inodearray_start = block_size * 2000;
+	//fseek(p, addr_inodearray_start, SEEK_SET);
+	//fwrite((disk->inode_array), sizeof((disk->inode_array)), 1, p);
+
+	////dirUnits
+	//addr_dirUnits_start = block_size * 8000;
+	//fseek(p, addr_dirUnits_start, SEEK_SET);
+	//fwrite(disk->dirUnits, sizeof(disk->dirUnits), 1, p);
+	//addr = reserved_block_mount * 4096;
+
+	////jiewei
+
+	//fseek(p, system_size - 1, SEEK_SET);
+	//char end = EOF;
+	//fwrite(&end, 1, 1, p);
+	//fclose(p);
+	/*create();*/
+	
 }
 
 //删除文件内容
 int releaseFile(int inodeNum) {
-	iNode* Myinode = &disk.inode_array[inodeNum];
+	iNode* Myinode = &disk->inode_array[inodeNum];
 	int fileBlock[data_block_mount];
 	memset(fileBlock, 0, sizeof(fileBlock));
-	for (int i = 0, j = Myinode->startBlockNum; i < Myinode->fileSize; i++, j = disk.FAT[j]) {
-		fileBlock[i] = disk.FAT[j];
+	for (int i = 0, j = Myinode->startBlockNum; i < Myinode->fileSize; i++, j = disk->FAT[j]) {
+		fileBlock[i] = disk->FAT[j];
 	}
 	int i = 0;
 	while (fileBlock[i] != 0) {
@@ -79,22 +143,22 @@ int releaseFile(int inodeNum) {
 
 //删除目录表中文件对应目录项
 int deleteDirUnit(int unitIndex) {
-	int dirAmount = disk.superblock.iNodeMount;
+	int dirAmount = disk->superblock.iNodeMount;
 	for (int i = unitIndex; i < dirAmount; i++) {
-		disk.dirUnits[i] = disk.dirUnits[i + 1];
+		disk->dirUnits[i] = disk->dirUnits[i + 1];
 	}
-	disk.superblock.iNodeMount--;
+	disk->superblock.iNodeMount--;
 	return 0;
 }
 
 //删除文件
 int deleteFile(char fileName[]) {
 
-	int fileNum = disk.superblock.iNodeMount;
+	int fileNum = disk->superblock.iNodeMount;
 	int i;
 	int flag = 0;
 	for (i = 0; i<fileNum; i++) {
-		if (strcmp(disk.dirUnits[i].fileName, fileName) == 0) {
+		if (strcmp(disk->dirUnits[i].fileName, fileName) == 0) {
 			//找到文件
 			flag = 1;
 			break;
@@ -104,7 +168,7 @@ int deleteFile(char fileName[]) {
 		printf("File not found!\n");
 		return -1;
 	}
-	dirUnit myUnit = disk.dirUnits[i];
+	dirUnit myUnit = disk->dirUnits[i];
 	int inodeNum = myUnit.inodeNumber;
 	releaseFile(inodeNum);
 	deleteDirUnit(i);
@@ -117,10 +181,10 @@ int getBlock(int blockNumber) {
 	int num = 0;
 	for (int i = block_mount / 16; i < block_mount; i++) {
 		//FAT表并不从0号block开始,前1/16的block作为保留块
-		if (disk.FAT[i] == 0 && startBlock == -1)
+		if (disk->FAT[i] == 0 && startBlock == -1)
 			startBlock == i;
 		//找到一块可用块
-		if (disk.FAT[i] == 0) {
+		if (disk->FAT[i] == 0) {
 			++num;
 		}
 	}
@@ -133,7 +197,7 @@ int getBlock(int blockNumber) {
 
 //为文件创建inode
 int createInode(int iNodeNum, int fileBlockNum, int fileSize) {
-	iNode *currentInode = &disk.inode_array[iNodeNum];
+	iNode *currentInode = &disk->inode_array[iNodeNum];
 	currentInode->fileSize = fileSize;
 	currentInode->startBlockNum = fileBlockNum;
 	return 0;
@@ -141,21 +205,21 @@ int createInode(int iNodeNum, int fileBlockNum, int fileSize) {
 
 //为文件创建目录项
 int addDirUnit(char fileName[], int inodeNum) {
-	int fileNum = disk.superblock.iNodeMount;
+	int fileNum = disk->superblock.iNodeMount;
 	if (fileNum == inode_count) {
 		printf("Dir is full,please delete some files!\n");
 		return -1;
 	}
 	for (int i = 0; i<fileNum; i++) {
-		if (strcmp(disk.dirUnits[i].fileName, fileName) == 0) {
+		if (strcmp(disk->dirUnits[i].fileName, fileName) == 0) {
 			printf("File already exists!\n");
 			return -1;
 		}
 	}
-	dirUnit* newDirUnit = &disk.dirUnits[fileNum];
-	disk.superblock.iNodeMount++;
-	strcpy(disk.dirUnits[fileNum].fileName, fileName);
-	disk.dirUnits[fileNum].inodeNumber = inodeNum;
+	dirUnit* newDirUnit = &disk->dirUnits[fileNum];
+	disk->superblock.iNodeMount++;
+	strcpy(disk->dirUnits[fileNum].fileName, fileName);
+	disk->dirUnits[fileNum].inodeNumber = inodeNum;
 	return 0;
 }
 
@@ -180,7 +244,7 @@ int newFile(char fileName[], int fileSize) {
 
 	int inodeBlock = -1;
 	for (int i = 0; i < inode_count; i++) {
-		if (disk.inodeMap[i] == 0)
+		if (disk->inode_Map[i] == 0)
 			//找到空闲inode
 			inodeBlock = i;
 	}
@@ -197,8 +261,8 @@ int newFile(char fileName[], int fileSize) {
 	//修改目录项
 	createInode(inodeBlock, fileBlock, fileSize);
 	for (int i = fileBlock, j = block_mount / 16, k = 0; j<block_mount&&k<fileSize; i = j, j++, k++) {
-		if (disk.FAT[j] == 0) {
-			disk.FAT[i] = j;
+		if (disk->FAT[j] == 0) {
+			disk->FAT[i] = j;
 		}
 	}
 	//修改目录
