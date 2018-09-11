@@ -18,26 +18,18 @@ int changeName(char oldName[], char newName[])
 
 //显示帮助信息
 void help() {
-	printf("The following are some operations and details:\n");
-	printf("create\t Creat Mini-FS.\t\n");
-	//printf("cd\t Toggle directory.\t\n");
-	printf("mount\t Load Mini-FS.\t\n");
-	//printf("add\t Add a local file into Mini-FS.\t\n");
-	printf("fmt\t Format Mini-FS space.\t\n");
-	//printf("dr\t Display the file directory in the space.\t\n");
-	printf("copyin\t Copy a file from operating system into Mini-FS.\t\n");
-	printf("copyout\t Copy a file from Mini-FS into operating system.\t\n");
-	printf("deletefile\t Delete a file in Mini-FS.\t\n");
-	//printf("tp\t Display the text file in the space.\t\n");
-	//printf("more\t Paging displays text files in space.\t\n");
-	printf("att\t Display spatial file`s arrtibutes.\t\n");
-	printf("help\t Display help informationof.\t\n");
-	//printf("dlDir\t Delete folder.\t\n");
-	//printf("pth\t Display the path for the current file.\t\n");
-	//printf("newfldr\t Creat a new folder.\t\n");
-	printf("newfile\t Create a new file.\t\n");
-	printf("rename\t Rename a file.\t\n");
-	printf("close\t Close Mini-FS and return to the operating system.\t\n");
+	printf("Below are some help information:\n\n");
+	printf("To create a Mini-FS storeage space:\t\t    create\n");
+	printf("To load Mini-FS	in run-time memory:\t\t    mount\n");
+	printf("To format Mini-FS storage space:   \t\t    fmt\n");
+	printf("To list all files in Mini-FS:      \t\t    ls\n");
+	printf("To delete a file from Mini-FS:     \t\t    delete\n");
+	printf("To display a file`s attribution:   \t\t    att\n");
+	printf("To show command tips information:  \t\t    help\n");
+	printf("To rename an existing file in Mini-FS:              rename\n");
+	printf("To close Mini-FS and back to operating system:      close\n");
+	printf("To copy a file from operating system into Mini-FS:  copyin\n");
+	printf("To copy a file from Mini-FS into operating system:  copyout\n");
 }
 
 //显示空间文件属性
