@@ -51,19 +51,20 @@ int main()
 			printf("\n");
 			//cin >> SName;
 			creat();
-			printf("\n");
+			printf("Create Mini-FS storage succeed!\n\n");
 		}
 		else if (cmd == "mount"){
 			printf("\n");
 			mount();
 			printf("\n");
+			printf("Mount Mini-FS storage succeed!\n\n");
 		}
 		else if (cmd == "copyin"){
 			printf("\n");
 			//cout<<""//???
 			cin >> SName;
 			copyin(SName);
-			printf("\n");
+			printf("Copy file %s in succeed!\n\n",SName);
 		}
 		else if (cmd == "copyout"){
 			printf("\n");
@@ -118,6 +119,19 @@ int main()
 			scanf("%s", fileName);
 			deleteFile(fileName);
 			printf("\n");
+		}
+		else if (cmd == "ls") {
+			printf("\n");
+			if (listFile() == 0) {
+				printf("Finished\n\n");
+			}
+			else{
+				printf("No file in Mini-FS\n\n");
+			}
+		}
+		else {
+			cout << cmd;
+			printf(":\nIllegal command!\n\n");
 		}
 	}
 }
